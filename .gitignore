@@ -1,0 +1,9 @@
+*.gch
+*~
+stl
+test
+.vscode/
+.idea
+a.exe
+a.out
+*.tmp
