@@ -4,15 +4,13 @@
 #include <memory>
 #include <cstddef>
 #include <algorithm>
-#include "conditional_t.hpp"
-#include "iterators_categories.hpp"
 #include "utils.hpp"
 #include "common_iterator.hpp"
 #include "reverse_iterator.hpp"
 
 namespace ft {
 
-	template<class T, class Allocator = std::allocator<T> >
+	template< class T, class Allocator = std::allocator<T> >
 	class vector {
 
 	public:
@@ -38,7 +36,7 @@ namespace ft {
 		size_type _capacity;
 		allocator_type _alloc;
 
-		template<class InputIterator>
+		template< class InputIterator >
 		difference_type get_diff(InputIterator first, InputIterator last)
 		{
 			difference_type i = 0;
@@ -116,7 +114,7 @@ namespace ft {
 			assign(n, val);
 		}
 
-		template<class InputIterator>
+		template< class InputIterator >
 		vector(InputIterator first, InputIterator last,
 				const allocator_type& alloc = allocator_type())
 				:_ptr(0), _size(0), _capacity(0), _alloc(alloc)
@@ -237,7 +235,7 @@ namespace ft {
 		/**
 		 * Modifiers
 		 */
-		template<class InputIterator>
+		template< class InputIterator >
 		void assign(InputIterator first, InputIterator last)
 		{
 			clear();
@@ -307,8 +305,11 @@ namespace ft {
 			_size += n;
 		}
 
-		template<class InputIterator>
-		void insert(iterator position, InputIterator first, typename ft::enable_if<!std::numeric_limits<InputIterator>::is_integer, InputIterator>::type last)
+		template< class InputIterator >
+		void insert(
+				iterator position, InputIterator first,
+				typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last
+		)
 		{
 			size_type n = get_diff(first, last);
 			difference_type offset = _size!=0 ? position-begin() : 0;
@@ -370,6 +371,8 @@ namespace ft {
 		 */
 		allocator_type get_allocator() const { return _alloc; }
 
+		pointer data() { return _ptr; }
+
 
 		/**
 		 * non-member function overloads
@@ -382,22 +385,7 @@ namespace ft {
 			if (lhs.size()!=rhs.size()) {
 				return false;
 			}
-			typename vector<T, Allocator>::const_iterator first1 = lhs.begin();
-			typename vector<T, Allocator>::const_iterator last1 = lhs.end();
-			typename vector<T, Allocator>::const_iterator first2 = rhs.begin();
-			typename vector<T, Allocator>::const_iterator last2 = rhs.end();
-
-			while (first1!=last1 && first2!=last2) {
-				if (!(*first1==*first2)) {
-					return false;
-				}
-				++first1;
-				++first2;
-			}
-			if (first1!=last1 || first2!=last2) {
-				return false;
-			}
-			return true;
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 		}
 
 		friend bool operator!=(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs)
@@ -407,18 +395,7 @@ namespace ft {
 
 		friend bool operator<(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs)
 		{
-			typename vector<T, Allocator>::const_iterator first1 = lhs.begin();
-			typename vector<T, Allocator>::const_iterator last1 = lhs.end();
-			typename vector<T, Allocator>::const_iterator first2 = rhs.begin();
-			typename vector<T, Allocator>::const_iterator last2 = rhs.end();
-
-			while (first1!=last1) {
-				if (first2==last2 || *first2<*first1) return false;
-				else if (*first1<*first2) return true;
-				++first1;
-				++first2;
-			}
-			return (first2!=last2);
+			return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 		}
 
 		friend bool operator<=(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs)

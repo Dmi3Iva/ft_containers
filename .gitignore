@@ -1,9 +1,15 @@
 *.gch
 *~
 stl
+ft
+a.out
 test
 .vscode/
 .idea
 a.exe
 a.out
 *.tmp
+containers_test/
+ft_containers-unit-test/
+*.swp
+*.log

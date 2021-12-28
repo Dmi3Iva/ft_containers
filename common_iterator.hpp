@@ -8,13 +8,11 @@
 #include "iterator_traits.hpp"
 
 namespace ft {
-	template<class _Iter>
+	template< class _Iter >
 	class common_iterator {
 
-	private:
-		typedef _Iter iterator_type;
-
 	public:
+		typedef _Iter iterator_type;
 		typedef typename ft::iterator_traits<iterator_type>::iterator_category iterator_category;
 		typedef typename ft::iterator_traits<iterator_type>::value_type value_type;
 		typedef typename ft::iterator_traits<iterator_type>::difference_type difference_type;
@@ -31,7 +29,7 @@ namespace ft {
 
 		~common_iterator() { };
 
-		template<typename S>
+		template< typename S >
 		common_iterator(const common_iterator<S>& rhs)
 				:_ptr(rhs.base()) { }
 
@@ -48,10 +46,10 @@ namespace ft {
 
 		bool operator==(const pointer& ptr) { return _ptr==ptr; }
 
-		template<class U, class W>
+		template< class U, class W >
 		friend bool operator==(const common_iterator<U>& lhs, const common_iterator<W>& rhs) { return lhs._ptr==rhs._ptr; }
 
-		template<class U, class W>
+		template< class U, class W >
 		friend bool operator!=(const common_iterator<U>& lhs, const common_iterator<W>& rhs) { return lhs._ptr!=rhs._ptr; }
 
 		reference operator*() { return *_ptr; }
@@ -104,16 +102,16 @@ namespace ft {
 
 		difference_type operator-(const common_iterator& rhs) const { return (_ptr-rhs._ptr); }
 
-		template<typename U, typename W>
+		template< typename U, typename W >
 		friend bool operator>=(const common_iterator<U>& lhs, const common_iterator<W>& rhs) { return lhs._ptr>=rhs._ptr; }
 
-		template<typename U, typename W>
+		template< typename U, typename W >
 		friend bool operator>(const common_iterator<U>& lhs, const common_iterator<W>& rhs) { return lhs._ptr>rhs._ptr; }
 
-		template<typename U, typename W>
+		template< typename U, typename W >
 		friend bool operator<=(const common_iterator<U>& lhs, const common_iterator<W>& rhs) { return lhs._ptr<=rhs._ptr; }
 
-		template<typename U, typename W>
+		template< typename U, typename W >
 		friend bool operator<(const common_iterator<U>& lhs, const common_iterator<W>& rhs) { return lhs._ptr<rhs._ptr; }
 
 		reference operator[](int n) const { return *(_ptr+n); }
